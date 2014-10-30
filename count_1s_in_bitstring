@@ -1,0 +1,12 @@
+unsigned count_ones(unsigned num)
+{
+    unsigned count = 0;
+
+    while (num)
+    {
+        num &= num - 1;
+        ++count;
+    }
+
+    return count;
+}
