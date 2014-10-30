@@ -1,3 +1,16 @@
+From Eli Bendersky's website http://eli.thegreenplace.net/2004/07/30/a-cool-algorithm-for-counting-ones-in-a-bitstring
+
+a cool algorithm for counting ones in a bitstring
+ July 30, 2004 at 13:24 Tags C & C++ , Programming
+ 
+The question: "Given a 32-bit unsigned integer, how do you count how many 1s are in it ?" is one of favorite interview quizzes. Naturally, the candidate is expected to code the "trivial" solution correctly - shifting right 32 times, counting when 1 "was shifted", etc. There are other techniques of doing it, up to a constant-time cool bit-fiddling trick. 
+
+Anyway, lately I've heard of a new technique to do it, which is also very cool, and has a curious complexity bound. It's O(b) where 'b' is the actual number of 1s in the given number.
+
+Consider an unsigned integer num. What is: num & (num - 1) ? Without trying a lot, it's hard to come up with the answer. What it actually does, is "clear the rightmost 1 in the bit representation of num". Weird, huh? 
+
+On each iteration, the rightmost 1 of num is cleared. count takes notice of how many times it happens until num becomes 0. If num has five 1 bits, the loop will iterate 5 times.
+
 unsigned count_ones(unsigned num)
 {
     unsigned count = 0;
@@ -10,3 +23,6 @@ unsigned count_ones(unsigned num)
 
     return count;
 }
+
+An additional piece of trivia: num & (num - 1) can be useful for another "binary trick". How would you quickly check if a number is a power of 2 (1, 2, 4, 8, 16 ... )? 
+Answer: If num & (num - 1) is 0, num is a power of 2. Powers of 2 have a single 1 in their binary representation, so the num & (num - 1) operation clears it and leaves 0 as the result. For all other numbers it won't work because other 1s will be left.
